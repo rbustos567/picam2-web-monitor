@@ -54,4 +54,4 @@ systemctl restart pi_monitor_camera.service
 
 echo "=== Installation Completed Successfully ==="
 echo "Check service status with: sudo systemctl status pi_monitor_camera.service"
-echo "IMPORTANTE: By default user and pass are: admin/admin. Make sure to edit /etc/pi_camera.env to change them and then restart service: sudo systemctl status pi_monitor_camera.service"
+echo "IMPORTANTE: By default user and pass are: admin/admin. Make sure to edit /etc/pi_camera.env to change them and then restart service: sudo systemctl restart pi_monitor_camera.service"
