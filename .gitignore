@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+pi_camera.env
+.env
