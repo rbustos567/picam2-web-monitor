@@ -11,8 +11,11 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+# Detect the exact absolute directory where install.sh is located
+INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURRENT_USER=${SUDO_USER:-$USER}
-INSTALL_DIR="/home/$CURRENT_USER/pi-camera-monitor"
+
+echo "[+] Target installation directory: $INSTALL_DIR"
 
 # 2. Update and install system dependencies & Picamera2
 echo "[+] Installing system packages and camera libraries..."
