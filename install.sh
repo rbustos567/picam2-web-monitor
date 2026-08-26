@@ -52,6 +52,11 @@ systemctl daemon-reload
 systemctl enable pi_monitor_camera.service
 systemctl restart pi_monitor_camera.service
 
+# 6. Obtain Primary Local IP
+LOCAL_IP=$(hostname -I | awk '{print $1}')
+
 echo "=== Installation Completed Successfully ==="
 echo "Check service status with: sudo systemctl status pi_monitor_camera.service"
-echo "IMPORTANTE: By default user and pass are: admin/admin. Make sure to edit /etc/pi_camera.env to change them and then restart service: sudo systemctl restart pi_monitor_camera.service"
+echo "IMPORTANT: By default user and password are: admin/admin. Make sure to edit /etc/pi_camera.env to change them and then restart service: sudo systemctl restart pi_monitor_camera.service"
+echo "Transmission should be ready. Enter the following URL on your Web Browser:"
+echo "http://${LOCAL_IP}:8080"
