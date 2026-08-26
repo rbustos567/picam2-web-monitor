@@ -33,7 +33,6 @@ if [ ! -f /etc/pi_camera.env ]; then
     cp "$INSTALL_DIR/pi_camera.env.example" /etc/pi_camera.env
     chmod 600 /etc/pi_camera.env
     chown root:root /etc/pi_camera.env
-    echo "[!] IMPORTANT: Edit /etc/pi_camera.env to set your desired username and password."
 else
     echo "[*] /etc/pi_camera.env already exists. Skipping creation."
 fi
@@ -55,3 +54,4 @@ systemctl restart pi_monitor_camera.service
 
 echo "=== Installation Completed Successfully ==="
 echo "Check service status with: sudo systemctl status pi_monitor_camera.service"
+echo "IMPORTANTE: By default user and pass are: admin/admin. Make sure to edit /etc/pi_camera.env to change them and then restart service: sudo systemctl status pi_monitor_camera.service"
