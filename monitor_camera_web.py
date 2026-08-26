@@ -71,7 +71,7 @@ class StreamingHandler(BaseHTTPRequestHandler):
             pass
         return False
 
-   def do_GET(self):
+    def do_GET(self):
         # Verify credentials before processing any petition 
         if not self.authenticate():
             self.do_AUTHHEAD()
