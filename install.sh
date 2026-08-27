@@ -17,7 +17,7 @@ CURRENT_USER=${SUDO_USER:-$USER}
 
 echo "[+] Target installation directory: $INSTALL_DIR"
 
-# 2. Update and install system dependencies & Picamera2
+# 2.1 Update and install system dependencies & Picamera2
 echo "[+] Installing system packages and camera libraries..."
 apt-get update
 apt-get install -y \
@@ -26,6 +26,15 @@ apt-get install -y \
     python3-libcamera \
     libcamera-apps \
     lsof
+
+# 2.2 Optional Tailscale Installation
+if ! command -v tailscale &> /dev/null; then
+    echo "[+] Tailscale not found. Installing Tailscale for secure remote access..."
+    curl -fsSL https://tailscale.com/install.sh | sh
+    echo "[!] Tailscale installed. You will need to run 'sudo tailscale up' to authenticate this device."
+else
+    echo "[*] Tailscale is already installed. Skipping installation."
+fi
 
 # 3. Create secure environment configuration file
 if [ ! -f /etc/pi_camera.env ]; then
@@ -52,11 +61,28 @@ systemctl daemon-reload
 systemctl enable pi_monitor_camera.service
 systemctl restart pi_monitor_camera.service
 
-# 6. Obtain Primary Local IP
+# 7. Fetch Local IP and Tailscale IP (if available)
 LOCAL_IP=$(hostname -I | awk '{print $1}')
+TAILSCALE_IP=$(tailscale ip -4 2>/dev/null || echo "")
 
-echo "=== Installation Completed Successfully ==="
-echo "Check service status with: sudo systemctl status pi_monitor_camera.service"
-echo "IMPORTANT: By default user and password are: admin/admin. Make sure to edit /etc/pi_camera.env to change them and then restart service: sudo systemctl restart pi_monitor_camera.service"
-echo "Transmission should be ready. Enter the following URL on your Web Browser:"
-echo "http://${LOCAL_IP}:8080"
+echo ""
+echo "=========================================================="
+echo "   Installation Completed Successfully!"
+echo "=========================================================="
+echo " Local Network Access:"
+echo "    http://${LOCAL_IP}:8080"
+
+if [ -n "$TAILSCALE_IP" ]; then
+  echo ""
+  echo " Remote Access (via Tailscale):"
+  echo "    http://${TAILSCALE_IP}:8080"
+else
+  echo ""
+  echo " Remote Access (Tailscale installed but not authenticated):"
+  echo "    Run 'sudo tailscale up' to link your Tailscale account,"
+  echo "    then re-run this script or check your Tailscale IP."
+fi
+
+echo ""
+echo " Note: Edit /etc/pi_camera.env to update your credentials."
+echo "=========================================================="
